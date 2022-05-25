@@ -2,6 +2,7 @@ import illustration from '../assets/images/illustration.svg'
 import googleIcon from "../assets/images/google-icon.svg"
 import logo from "../assets/images/logo.svg"
 import "../styles/auth.scss"
+import {Button} from "../components/Button"
 
 export function Home() {
     return (
@@ -12,16 +13,16 @@ export function Home() {
                 <p>Tire as dúvidas da sua audiência em tempo-real</p>
             </aside>
             <main>
-                <div>
+                <div className="main-content">
                     <img src={logo} alt="Letmeask" />
-                    <button>
+                    <button className="create-room">
                         <img src={googleIcon} alt="Logo" />
                         Crie sua sala com o Google
                     </button>
-                    <div>ou entre em uma sala</div>
+                    <div className="separator">ou entre em uma sala</div>
                     <form>
                         <input type="text" placeholder="Digite o código da sala" />
-                        <button type="submit">Entrar na sala</button>
+                        <Button type="submit">Entrar na sala</Button>
                     </form>
                 </div>
             </main>
