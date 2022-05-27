@@ -5,32 +5,26 @@ import logo from "../assets/images/logo.svg"
 import "../styles/auth.scss"
 import { Button } from "../components/Button"
 import { useNavigate } from "react-router-dom"
-/* import { auth } from "../services/firebase";
- */import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import {TestContext} from "../App"
+import {auth} from "../services/firebase"
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import {AuthContext} from ".././contexts/AuthContext"
+
 
 export function Home() {
     const history = useNavigate();
-    const {value, setValue} = useContext(TestContext)
+    const {user,  signInWithGoogle} = useContext(AuthContext)
 
-    function handleCreateRoom() {
-        const provider = new GoogleAuthProvider();
-        const auth = getAuth();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                console.log(result)
-                history("/rooms/new")
-            }).catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
-    }
+    
+
+   async function handleCreateRoom() {
+
+        if(!user){
+         await signInWithGoogle()
+        }
+               
+            
+            history("/rooms/new")
+   };
 
     return (
         <div id="page-auth">
@@ -40,7 +34,6 @@ export function Home() {
                 <p>Tire as dúvidas da sua audiência em tempo-real</p>
             </aside>
             <main>
-                <h1>{value}</h1>
                 <div className="main-content">
                     <img src={logo} alt="Letmeask" />
                     <button className="create-room" onClick={handleCreateRoom}>

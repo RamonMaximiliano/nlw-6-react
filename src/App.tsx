@@ -1,22 +1,25 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
 import { Home } from "./pages/Home"
 import { NewRoom } from "./pages/NewRoom"
-
-//contexto
-export const TestContext = createContext({} as any)
+import { AuthContextProvider } from "./contexts/AuthContext"
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";import "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import './services/firebase'
+import { auth } from "./services/firebase";
 
 function App() {
-  const [value, setValue] = useState('Teste')
-
   return (
     <BrowserRouter>
-      <TestContext.Provider value={{value, setValue}}>
+    <AuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rooms/new" element={<NewRoom />} />
         </Routes>
-      </TestContext.Provider>
+        </AuthContextProvider>
+
     </BrowserRouter>
   );
 }
