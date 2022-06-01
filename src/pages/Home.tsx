@@ -8,11 +8,12 @@ import { useNavigate } from "react-router-dom"
 import {auth} from "../services/firebase"
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import {AuthContext} from ".././contexts/AuthContext"
+import {useAuth} from "../hooks/useAuth"
 
 
 export function Home() {
     const history = useNavigate();
-    const {user,  signInWithGoogle} = useContext(AuthContext)
+    const {user,  signInWithGoogle} = useAuth()
 
     
 
