@@ -3,22 +3,41 @@ import logo from "../assets/images/logo.svg"
 import "../styles/auth.scss"
 import {Button} from "../components/Button"
 import { Link } from "react-router-dom"
+import { getDatabase,ref, set} from "firebase/database";
 import { useContext, useState, FormEvent } from 'react'
 import {AuthContext} from "../contexts/AuthContext"
+import  {database} from '../services/firebase'
 
 
 export function NewRoom() {
-/*     const {user} = useContext(AuthContext)
- */
+     const {user} = useContext(AuthContext)
+ 
+const database = getDatabase();
 
 const [newRoom, setNewRoom] = useState('')
 
-async function handleCreateRoom(event: FormEvent){
+/* async function handleCreateRoom(event: FormEvent){
     event.preventDefault()
 
-    console.log(newRoom);
-
+if(newRoom.trim() === ''){
+    return;
 }
+
+const roomRef = database.ref('rooms');
+
+const firebaseRoom = await roomRef.push({
+    title: newRoom,
+    authorID: user?.id,
+})
+} */
+
+function handleCreateRoom(event: FormEvent) {
+    event.preventDefault()
+    const db = getDatabase();
+    set(ref(db, 'users/'), {
+        title: newRoom,
+      });
+  }
 
     return (
         <div id="page-auth">
