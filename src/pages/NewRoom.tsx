@@ -1,43 +1,36 @@
+import { FormEvent, useState } from "react"
+import { Link, useHistory } from "react-router-dom"
 import illustration from '../assets/images/illustration.svg'
 import logo from "../assets/images/logo.svg"
-import "../styles/auth.scss"
 import {Button} from "../components/Button"
-import { Link } from "react-router-dom"
-import { getDatabase,ref, set} from "firebase/database";
-import { useContext, useState, FormEvent } from 'react'
-import {AuthContext} from "../contexts/AuthContext"
-import  {database} from '../services/firebase'
+import {database} from "../services/firebase"
+import {useAuth} from "../hooks/useAuth"
 
+import "../styles/auth.scss"
 
 export function NewRoom() {
-     const {user} = useContext(AuthContext)
- 
-const database = getDatabase();
+    const {user} = useAuth()
+    const history = useHistory()
+    const [newRoom, setNewRoom] = useState('')
 
-const [newRoom, setNewRoom] = useState('')
+    async function handleCreateRoom(event:FormEvent){
+        event.preventDefault()
 
-/* async function handleCreateRoom(event: FormEvent){
-    event.preventDefault()
+        if(newRoom.trim() === ''){
+            return
+        }
 
-if(newRoom.trim() === ''){
-    return;
-}
+        const roomRef = database.ref("rooms");
 
-const roomRef = database.ref('rooms');
+        const firebaseRoom = await roomRef.push(
+            {
+                title:newRoom,
+                authorId: user?.id,
+            }
+        )
 
-const firebaseRoom = await roomRef.push({
-    title: newRoom,
-    authorID: user?.id,
-})
-} */
-
-function handleCreateRoom(event: FormEvent) {
-    event.preventDefault()
-    const db = getDatabase();
-    set(ref(db, 'users/'), {
-        title: newRoom,
-      });
-  }
+        history.push(`/rooms/${firebaseRoom.key}`)
+    }
 
     return (
         <div id="page-auth">
@@ -52,7 +45,7 @@ function handleCreateRoom(event: FormEvent) {
                     <h2>Criar uma nova sala</h2>
 
                     <form onSubmit={handleCreateRoom}>
-                        <input type="text" placeholder="Nome da sala" onChange={event => setNewRoom(event.target.value)} value={newRoom}  />
+                        <input type="text" placeholder="Nome da sala" onChange={event => setNewRoom(event.target.value)} value={newRoom}/>
                         <Button type="submit">Criar sala</Button>
                     </form>
                     <p>Quer entrar em uma sala existente? <Link to={"/"}>Clique aqui</Link></p>

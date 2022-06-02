@@ -1,30 +1,20 @@
+import { useHistory } from "react-router-dom"
 import illustration from '../assets/images/illustration.svg'
-import googleIcon from "../assets/images/google-icon.svg"
-import { useContext } from 'react'
 import logo from "../assets/images/logo.svg"
-import "../styles/auth.scss"
+import googleIcon from "../assets/images/google-icon.svg"
 import { Button } from "../components/Button"
-import { useNavigate } from "react-router-dom"
-import {auth} from "../services/firebase"
-import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import {AuthContext} from ".././contexts/AuthContext"
 import {useAuth} from "../hooks/useAuth"
-
+import "../styles/auth.scss"
 
 export function Home() {
-    const history = useNavigate();
+    const history = useHistory();
     const {user,  signInWithGoogle} = useAuth()
-
-    
-
-   async function handleCreateRoom() {
+    async function handleCreateRoom() {
 
         if(!user){
          await signInWithGoogle()
         }
-               
-            
-            history("/rooms/new")
+        history.push("/rooms/new")
    };
 
     return (
